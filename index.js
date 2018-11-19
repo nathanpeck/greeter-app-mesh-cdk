@@ -22,7 +22,7 @@ class GreetingStack extends cdk.Stack {
     const nameTaskDefinition = new ecs.Ec2TaskDefinition(this, 'name-task-definition', {});
 
     const nameContainer = nameTaskDefinition.addContainer('name', {
-      image: ecs.DockerHub.image('nathanpeck/name'),
+      image: ecs.ContainerImage.fromDockerHub('nathanpeck/name'),
       memoryLimitMiB: 128
     });
 
@@ -40,7 +40,7 @@ class GreetingStack extends cdk.Stack {
     const greetingTaskDefinition = new ecs.Ec2TaskDefinition(this, 'greeting-task-definition', {});
 
     const greetingContainer = greetingTaskDefinition.addContainer('greeting', {
-      image: ecs.DockerHub.image('nathanpeck/greeting'),
+      image: ecs.ContainerImage.fromDockerHub('nathanpeck/greeting'),
       memoryLimitMiB: 128
     });
 
@@ -88,7 +88,7 @@ class GreetingStack extends cdk.Stack {
     const greeterTaskDefinition = new ecs.Ec2TaskDefinition(this, 'greeter-task-definition', {});
 
     const greeterContainer = greeterTaskDefinition.addContainer('greeter', {
-      image: ecs.DockerHub.image('nathanpeck/greeter'),
+      image: ecs.ContainerImage.fromDockerHub('nathanpeck/greeter'),
       memoryLimitMiB: 128,
       environment: {
         GREETING_URL: 'http://' + internalLB.dnsName + '/greeting',
