@@ -1,4 +1,4 @@
-const cdk = require('@aws-cdk/cdk');
+const cdk = require('@aws-cdk/core');
 const ecs = require('@aws-cdk/aws-ecs');
 const ec2 = require('@aws-cdk/aws-ec2');
 const elbv2 = require('@aws-cdk/aws-elasticloadbalancingv2');
@@ -7,22 +7,23 @@ class GreetingStack extends cdk.Stack {
   constructor(parent, id, props) {
     super(parent, id, props);
 
-    const vpc = new ec2.VpcNetwork(this, 'GreetingVpc', { maxAZs: 2 });
+    const vpc = new ec2.Vpc(this, 'GreetingVpc', { maxAZs: 2 });
 
     // Create an ECS cluster
     const cluster = new ecs.Cluster(this, 'Cluster', { vpc });
 
     // Add capacity to it
-    cluster.addDefaultAutoScalingGroupCapacity({
+    cluster.addCapacity('greeter-capacity', {
       instanceType: new ec2.InstanceType('t3.xlarge'),
-      instanceCount: 3
+      minCapacity: 3,
+      maxCapacity: 3
     });
 
     // Name service
     const nameTaskDefinition = new ecs.Ec2TaskDefinition(this, 'name-task-definition', {});
 
     const nameContainer = nameTaskDefinition.addContainer('name', {
-      image: ecs.ContainerImage.fromDockerHub('nathanpeck/name'),
+      image: ecs.ContainerImage.fromRegistry('nathanpeck/name'),
       memoryLimitMiB: 128
     });
 
@@ -40,7 +41,7 @@ class GreetingStack extends cdk.Stack {
     const greetingTaskDefinition = new ecs.Ec2TaskDefinition(this, 'greeting-task-definition', {});
 
     const greetingContainer = greetingTaskDefinition.addContainer('greeting', {
-      image: ecs.ContainerImage.fromDockerHub('nathanpeck/greeting'),
+      image: ecs.ContainerImage.fromRegistry('nathanpeck/greeting'),
       memoryLimitMiB: 128
     });
 
@@ -88,11 +89,11 @@ class GreetingStack extends cdk.Stack {
     const greeterTaskDefinition = new ecs.Ec2TaskDefinition(this, 'greeter-task-definition', {});
 
     const greeterContainer = greeterTaskDefinition.addContainer('greeter', {
-      image: ecs.ContainerImage.fromDockerHub('nathanpeck/greeter'),
+      image: ecs.ContainerImage.fromRegistry('nathanpeck/greeter'),
       memoryLimitMiB: 128,
       environment: {
-        GREETING_URL: 'http://' + internalLB.dnsName + '/greeting',
-        NAME_URL: 'http://' + internalLB.dnsName + '/name'
+        GREETING_URL: 'http://' + internalLB.loadBalancerDnsName + '/greeting',
+        NAME_URL: 'http://' + internalLB.loadBalancerDnsName + '/name'
       }
     });
 
@@ -106,7 +107,7 @@ class GreetingStack extends cdk.Stack {
       taskDefinition: greeterTaskDefinition
     });
 
-     // Internet facing load balancer for the frontend services
+    // Internet facing load balancer for the frontend services
     const externalLB = new elbv2.ApplicationLoadBalancer(this, 'external', {
       vpc: vpc,
       internetFacing: true
@@ -119,16 +120,18 @@ class GreetingStack extends cdk.Stack {
       targets: [greeterService]
     });
 
-    new cdk.Output(this, 'InternalDNS', { value: internalLB.dnsName });
-    new cdk.Output(this, 'ExternalDNS', { value: externalLB.dnsName });
+    this.internalDNS = new cdk.CfnOutput(this, 'InternalDNS', {
+      exportName: 'greeter-app-internal',
+      value: internalLB.loadBalancerDnsName
+    });
+    this.externalDNS = new cdk.CfnOutput(this, 'ExternalDNS', {
+      exportName: 'greeter-app-external',
+      value: externalLB.loadBalancerDnsName
+    });
   }
 }
 
-class GreetingApp extends cdk.App {
-  constructor(argv) {
-    super(argv);
-    new GreetingStack(this, 'greeting-stack');
-  }
-}
+const app = new cdk.App();
+const greeting = new GreetingStack(app, 'greeting-stack');
 
-new GreetingApp().run();
+app.synth();

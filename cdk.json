@@ -1,14 +1,3 @@
 {
-  "app": "node index.js",
-  "context": {
-    "availability-zones:account=209640446841:region=us-east-1": [
-      "us-east-1a",
-      "us-east-1b",
-      "us-east-1c",
-      "us-east-1d",
-      "us-east-1e",
-      "us-east-1f"
-    ],
-    "ssm:account=209640446841:parameterName=/aws/service/ecs/optimized-ami/amazon-linux/recommended:region=us-east-1": "{\"schema_version\":1,\"image_name\":\"amzn-ami-2018.03.h-amazon-ecs-optimized\",\"image_id\":\"ami-07eb698ce660402d2\",\"os\":\"Amazon Linux\",\"ecs_runtime_version\":\"Docker version 18.06.1-ce\",\"ecs_agent_version\":\"1.21.0\"}"
-  }
+  "app": "node index.js"
 }
