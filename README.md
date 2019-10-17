@@ -14,3 +14,11 @@ The microservices are connected like this:
 * The `greeter` services uses App Mesh and an Envoy Proxy sidecar to establish a service mesh that allows it to directly fetch from the `greeting` and `name` service containers
 
 You can see the full CDK app that deploys this architecture here: [index.js](/index.js)
+
+## Usage
+
+Clone the repository, and ensure that you have Node.js installed on your development machine.
+
+Run `npm install` to install the project dependencies
+
+Run `npm deploy` to deploy the project on your AWS account. After a few minutes you will be given a URL of the running application.
