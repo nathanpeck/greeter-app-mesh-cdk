@@ -4,15 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "cdk deploy",
+    "destroy": "cdk destroy",
+    "synth": "cdk synth",
+    "diff": "cdk diff"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-cdk/aws-ec2": "0.37.0",
-    "@aws-cdk/aws-ecs": "0.37.0",
-    "@aws-cdk/aws-elasticloadbalancingv2": "0.37.0",
-    "@aws-cdk/core": "0.37.0"
+    "@aws-cdk/aws-ec2": "1.12.0",
+    "@aws-cdk/aws-ecs": "1.12.0",
+    "@aws-cdk/aws-appmesh": "1.12.0",
+    "@aws-cdk/aws-servicediscovery": "1.12.0",
+    "@aws-cdk/aws-elasticloadbalancingv2": "1.12.0",
+    "@aws-cdk/core": "1.12.0"
+  },
+  "devDependencies": {
+    "aws-cdk": "1.12.0"
   }
 }
