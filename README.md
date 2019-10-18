@@ -21,4 +21,5 @@ Clone the repository, and ensure that you have Node.js installed on your develop
 
 Run `npm install` to install the project dependencies
 
-Run `npm deploy` to deploy the project on your AWS account. After a few minutes you will be given a URL of the running application.
+Run `npm run-script deploy` to deploy the project on your AWS account. After a few minutes you will be given a URL of the running application. You may also need to run an initial bootstrap command if you have never used AWS CDK on your AWS account before. The
+CDK tool will tell you the command to run if necessary.
