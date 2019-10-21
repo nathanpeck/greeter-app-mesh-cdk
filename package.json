@@ -2,25 +2,25 @@
   "name": "ecs-cdk-templates",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "deploy": "cdk deploy",
-    "destroy": "cdk destroy",
-    "synth": "cdk synth",
-    "diff": "cdk diff"
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-cdk/aws-ec2": "1.12.0",
-    "@aws-cdk/aws-ecs": "1.12.0",
-    "@aws-cdk/aws-appmesh": "1.12.0",
-    "@aws-cdk/aws-servicediscovery": "1.12.0",
-    "@aws-cdk/aws-elasticloadbalancingv2": "1.12.0",
-    "@aws-cdk/core": "1.12.0"
+    "@aws-cdk/aws-ec2": "*",
+    "@aws-cdk/aws-ecs": "*",
+    "@aws-cdk/aws-appmesh": "*",
+    "@aws-cdk/aws-servicediscovery": "*",
+    "@aws-cdk/aws-elasticloadbalancingv2": "*",
+    "@aws-cdk/core": "*",
+    "cdk": "*"
   },
   "devDependencies": {
-    "aws-cdk": "1.12.0"
+    "@types/node": "^12.7.7",
+    "typescript": "^3.6.3"
   }
 }
